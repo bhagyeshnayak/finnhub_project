@@ -1,0 +1,4 @@
+Flask
+finnhub-python
+python-dotenv
+requests

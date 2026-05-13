@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Stock Market App</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h1{
+            color: darkblue;
+        }
+
+        h2{
+            color: #222;
+        }
+
+        .btn{
+            padding: 10px 15px;
+            margin: 5px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover{
+            background: darkblue;
+        }
+
+        .search-form{
+            margin-bottom: 20px;
+        }
+
+        .search-input{
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .card{
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            width: 600px;
+            box-shadow: 0px 0px 5px gray;
+        }
+
+        .info{
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .note{
+            background: #fff4cc;
+            border-left: 4px solid #c99900;
+            padding: 12px;
+            width: 600px;
+            margin-bottom: 20px;
+        }
+
+        hr{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Stock Market App</h1>
+
+    {% if not api_configured %}
+
+    <div class="note">
+        API key not found. Add <b>API_KEY</b> to your environment or <code>.env</code> file to load live stock quotes.
+    </div>
+
+    {% endif %}
+
+    <form method="POST" class="search-form">
+
+        <input
+            class="search-input"
+            type="text"
+            name="symbol"
+            placeholder="Enter stock symbol"
+            value="{{ symbol }}">
+
+        <button class="btn" type="submit">Search</button>
+
+    </form>
+
+    <h2>Company List</h2>
+
+    {% for company in companies %}
+
+    <form method="POST" style="display:inline;">
+
+        <button
+            class="btn"
+            type="submit"
+            name="symbol"
+            value="{{ company.ticker }}">
+
+            {{ company.ticker }}
+
+        </button>
+
+    </form>
+
+    {% endfor %}
+
+    {% if company_data %}
+
+    <div class="card">
+
+        <h2>{{ company_data.ticker or symbol }}</h2>
+
+        <h3>Company Information</h3>
+
+        <div class="info">
+            <b>Name:</b>
+            {{ company_data.name or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Ticker:</b>
+            {{ company_data.ticker or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Exchange:</b>
+            {{ company_data.exchange or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Currency:</b>
+            {{ company_data.currency or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Country:</b>
+            {{ company_data.country or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Industry:</b>
+            {{ company_data.finnhubIndustry or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>IPO:</b>
+            {{ company_data.ipo or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Market Cap:</b>
+            {{ company_data.marketCapitalization or "N/A" }}
+        </div>
+
+        <div class="info">
+            <b>Website:</b>
+            {% if company_data.weburl %}
+            <a href="{{ company_data.weburl }}" target="_blank" rel="noreferrer">{{ company_data.weburl }}</a>
+            {% else %}
+            N/A
+            {% endif %}
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    {% if quote_data %}
+
+    <hr>
+
+    <div class="card">
+
+        <h2>Live Stock Data</h2>
+
+        <p><b>Current Price:</b> {{ quote_data.c }}</p>
+
+        <p><b>Change:</b> {{ quote_data.d }}</p>
+
+        <p><b>Change %:</b> {{ quote_data.dp }}%</p>
+
+        <p><b>High:</b> {{ quote_data.h }}</p>
+
+        <p><b>Low:</b> {{ quote_data.l }}</p>
+
+        <p><b>Open:</b> {{ quote_data.o }}</p>
+
+        <p><b>Previous Close:</b> {{ quote_data.pc }}</p>
+
+    </div>
+
+    {% endif %}
+
+</body>
+
+</html>
