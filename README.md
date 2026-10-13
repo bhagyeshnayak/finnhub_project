@@ -5,7 +5,7 @@ A Flask-based stock market web application using the Finnhub API.
 
 ## 🚀 Features
 
-- Search stock companies by symbol
+- Search stock companies by symbol is ok
 - View company information
 - View live stock market data
 - Fetch data from Finnhub API
